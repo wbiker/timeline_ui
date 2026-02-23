@@ -7,7 +7,7 @@ import { StoryTable } from './story-table/story-table';
   selector: 'app-root',
   imports: [RouterOutlet, StoryTable, MatTableModule],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
 export class App {
   protected readonly title = signal('timeline_ui');
