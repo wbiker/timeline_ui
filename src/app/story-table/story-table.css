@@ -1,0 +1,42 @@
+/* Make table cells editable */
+mat-table {
+  width: 100%;
+}
+
+td {
+  padding: 8px;
+  cursor: pointer;
+}
+
+td span {
+  display: block;
+  min-height: 24px;
+  padding: 4px 8px;
+  border-radius: 2px;
+}
+
+td span:hover {
+  background-color: #f5f5f5;
+}
+
+td input {
+  width: 100%;
+  padding: 4px 8px;
+  border: 2px solid #1976d2;
+  border-radius: 2px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+td input:focus {
+  outline: none;
+  border-color: #1565c0;
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+}
+
+/* First column styling */
+th:first-of-type,
+td:first-of-type {
+  min-width: 120px;
+}
+
