@@ -34,7 +34,7 @@ export class StoryTable {
   constructor(private fb: FormBuilder) {
     this.timespan = this.calculateTimespan();
     this.dataSource = new MatTableDataSource([
-      { name: 'Cornelia', mo: 8, tu: 8, we: 8, th: 8, fr: 8 }
+      {}
     ]);
   }
 
