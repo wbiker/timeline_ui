@@ -3,6 +3,15 @@ mat-table {
   width: 100%;
 }
 
+.mat-table {
+  border: 1px solid #ddd;
+}
+
+.mat-cell {
+  border: 1px, solid #ddd;
+  padding: 8px;
+}
+
 td {
   padding: 8px;
   cursor: pointer;

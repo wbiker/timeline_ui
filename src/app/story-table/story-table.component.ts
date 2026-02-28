@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatTable, MatTableDataSource, MatColumnDef, MatHeaderCellDef, MatCellDef, MatHeaderRowDef, MatRowDef, MatHeaderCell, MatCell, MatHeaderRow, MatRow } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { StoryService } from '../services/story-service'
 
 @Component({
   selector: 'app-story-table',
@@ -19,23 +20,29 @@ import { MatInputModule } from '@angular/material/input';
     MatCell,
     MatHeaderRow,
     MatRow,
-    MatInputModule
+    MatInputModule,
   ],
-  templateUrl: './story-table.html',
-  styleUrl: './story-table.css',
+  templateUrl: './story-table.component.html',
+  styleUrl: './story-table.component.css',
+  standalone: true,
 })
-export class StoryTable {
+export class StoryTable implements OnInit {
   timespan: string;
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['name', 'mo', 'tu', 'we', 'th', 'fr'];
+  displayedColumns: string[] = ['name', 'mo', 'tu', 'we', 'th', 'fr', 'totalRow'];
   editControl: FormControl = new FormControl();
   editingCell: { rowIndex: number; column: string } | null = null;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private storyService: StoryService) {
     this.timespan = this.calculateTimespan();
     this.dataSource = new MatTableDataSource([
       {}
     ]);
+  }
+
+  ngOnInit() {
+//     this.dataSource = this.storyService.fetchData();
+    const result = this.storyService.fetchData();
   }
 
   /**
@@ -54,6 +61,7 @@ export class StoryTable {
     data[rowIndex][column] = this.editControl.value;
     this.dataSource.data = [...data];
     this.editingCell = null;
+    this.calculateTableRow(rowIndex);
   }
 
   /**
@@ -63,7 +71,16 @@ export class StoryTable {
     this.editingCell = null;
   }
 
-  // ...existing code...
+  private calculateTableRow(rowIndex: number) {
+    const data = this.dataSource.data;
+    const total = Object.entries(data[rowIndex]).reduce<number>((acc, [key, value]) => {
+        if (typeof value === 'number' && key !== 'totalRow') {
+          return acc += value;
+        }
+        return acc;
+      }, 0)
+    data[rowIndex]['totalRow'] = total;
+  }
 
   /**
    * Calculate current week number and date range (Monday to Friday)

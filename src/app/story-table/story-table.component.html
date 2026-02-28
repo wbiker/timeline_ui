@@ -1,4 +1,3 @@
-<p>story-table works!</p>
 <mat-table [dataSource]="dataSource">
   <!-- Name Column -->
   <ng-container matColumnDef="name">
@@ -100,6 +99,13 @@
              (keyup.enter)="saveEdit(i, 'fr')"
              (keyup.escape)="cancelEdit()"
              autofocus>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="totalRow">
+    <th mat-header-cell *matHeaderCellDef>Gesamt</th>
+    <td mat-cell *matCellDef="let row; let i = index">
+        {{ row.totalRow }}
     </td>
   </ng-container>
 
