@@ -58,6 +58,7 @@ mat-table {
   padding: 0;
   border-right: 1px solid #e0e0e0;
   font-size: 14px;
+  vertical-align: middle;
 }
 
 .mat-mdc-cell:last-of-type {
@@ -72,29 +73,35 @@ td {
   position: relative;
 }
 
+/* Keep hover on the full cell area to avoid partial top shading */
+.mat-mdc-cell:hover {
+  background-color: rgba(25, 118, 210, 0.08);
+}
+
 /* Common styling for span and input to prevent height shift */
 td span,
 td input {
-  display: block;
+  display: flex;
+  align-items: center;
   width: 100%;
-  min-height: 52px;
-  padding: 16px;
+  height: 52px;
+  padding: 0 16px;
   box-sizing: border-box;
   font-size: 14px;
   font-family: inherit;
   line-height: 20px;
   margin: 0;
   border: 2px solid transparent;
+  background: transparent;
 }
 
 /* Span (display mode) */
 td span {
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
   border-radius: 0;
 }
 
 td span:hover {
-  background-color: rgba(25, 118, 210, 0.08);
   border-color: rgba(25, 118, 210, 0.2);
 }
 
@@ -147,4 +154,3 @@ td:last-of-type span {
   font-weight: 600;
   color: #1976d2;
 }
-
