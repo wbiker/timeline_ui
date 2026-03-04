@@ -1,51 +1,150 @@
-/* Make table cells editable */
+/* Container styling */
+:host {
+  display: block;
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Material table styling */
 mat-table {
   width: 100%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
 }
 
-.mat-table {
-  border: 1px solid #ddd;
+/* Header styling */
+.mat-mdc-header-row {
+  background-color: #1976d2;
+  min-height: 56px;
 }
 
-.mat-cell {
-  border: 1px, solid #ddd;
-  padding: 8px;
+.mat-mdc-header-cell {
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 16px;
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
 }
 
+.mat-mdc-header-cell:last-of-type {
+  border-right: none;
+}
+
+/* Row styling */
+.mat-mdc-row {
+  min-height: 52px;
+  transition: background-color 0.2s ease;
+}
+
+.mat-mdc-row:hover {
+  background-color: #f5f7fa;
+}
+
+.mat-mdc-row:nth-child(even) {
+  background-color: #fafbfc;
+}
+
+.mat-mdc-row:nth-child(even):hover {
+  background-color: #f0f2f5;
+}
+
+/* Cell styling */
+.mat-mdc-cell {
+  padding: 0;
+  border-right: 1px solid #e0e0e0;
+  font-size: 14px;
+}
+
+.mat-mdc-cell:last-of-type {
+  border-right: none;
+  font-weight: 600;
+  background-color: rgba(25, 118, 210, 0.05);
+}
+
+/* Editable cell wrapper */
 td {
-  padding: 8px;
   cursor: pointer;
+  position: relative;
 }
 
-td span {
+/* Common styling for span and input to prevent height shift */
+td span,
+td input {
   display: block;
-  min-height: 24px;
-  padding: 4px 8px;
-  border-radius: 2px;
+  width: 100%;
+  min-height: 52px;
+  padding: 16px;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-family: inherit;
+  line-height: 20px;
+  margin: 0;
+  border: 2px solid transparent;
+}
+
+/* Span (display mode) */
+td span {
+  transition: all 0.2s ease;
+  border-radius: 0;
 }
 
 td span:hover {
-  background-color: #f5f5f5;
+  background-color: rgba(25, 118, 210, 0.08);
+  border-color: rgba(25, 118, 210, 0.2);
 }
 
+/* Input (edit mode) */
 td input {
-  width: 100%;
-  padding: 4px 8px;
   border: 2px solid #1976d2;
-  border-radius: 2px;
-  font-size: 14px;
-  font-family: inherit;
+  border-radius: 0;
+  background-color: #fff;
+  outline: none;
 }
 
 td input:focus {
-  outline: none;
   border-color: #1565c0;
-  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+  box-shadow: inset 0 0 0 1px #1565c0;
+  background-color: #f8fbff;
 }
 
-/* First column styling */
+/* Number input - remove spinners */
+td input[type="number"]::-webkit-inner-spin-button,
+td input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+td input[type="number"] {
+  -moz-appearance: textfield;
+  text-align: center;
+}
+
+/* First column (name) styling */
 th:first-of-type,
 td:first-of-type {
-  min-width: 120px;
+  min-width: 200px;
+}
+
+td:first-of-type span,
+td:first-of-type input {
+  text-align: left;
+  font-weight: 500;
+}
+
+/* Center align numeric columns */
+td:not(:first-of-type) span {
+  text-align: center;
+}
+
+/* Total column styling */
+td:last-of-type span {
+  text-align: center;
+  font-weight: 600;
+  color: #1976d2;
 }
 

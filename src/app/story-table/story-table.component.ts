@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, ElementRef, ViewChildren, QueryList } from '@angular/core';
 import { MatTable, MatTableDataSource, MatColumnDef, MatHeaderCellDef, MatCellDef, MatHeaderRowDef, MatRowDef, MatHeaderCell, MatCell, MatHeaderRow, MatRow } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormControl } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { StoryService } from '../services/story-service'
 
@@ -26,17 +26,28 @@ import { StoryService } from '../services/story-service'
   styleUrl: './story-table.component.css',
   standalone: true,
 })
-export class StoryTable implements OnInit {
+export class StoryTable implements OnInit, AfterViewChecked {
   timespan: string;
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['name', 'mo', 'tu', 'we', 'th', 'fr', 'totalRow'];
   editControl: FormControl = new FormControl();
   editingCell: { rowIndex: number; column: string } | null = null;
+  private shouldFocus = false;
+
+  @ViewChildren('editInput') editInputs!: QueryList<ElementRef>;
 
   constructor(private fb: FormBuilder, private storyService: StoryService) {
     this.timespan = this.calculateTimespan();
     this.dataSource = new MatTableDataSource([
-      {}
+      {
+        name: '',
+        mo: 0,
+        tu: 0,
+        we: 0,
+        th: 0,
+        fr: 0,
+        totalRow: 0
+      }
     ]);
   }
 
@@ -45,12 +56,21 @@ export class StoryTable implements OnInit {
     const result = this.storyService.fetchData();
   }
 
+  ngAfterViewChecked() {
+    if (this.shouldFocus && this.editInputs.length > 0) {
+      this.editInputs.first.nativeElement.focus();
+      this.editInputs.first.nativeElement.select();
+      this.shouldFocus = false;
+    }
+  }
+
   /**
    * Start editing a cell
    */
   startEdit(rowIndex: number, column: string, currentValue: any): void {
     this.editingCell = { rowIndex, column };
     this.editControl.setValue(currentValue);
+    this.shouldFocus = true;
   }
 
   /**
@@ -58,10 +78,54 @@ export class StoryTable implements OnInit {
    */
   saveEdit(rowIndex: number, column: string): void {
     const data = this.dataSource.data;
-    data[rowIndex][column] = this.editControl.value;
+    let newValue = this.editControl.value;
+
+    // For numeric columns, convert empty/null values to 0
+    if (column !== 'name' && (newValue === null || newValue === undefined || newValue === '')) {
+      newValue = 0;
+    }
+
+    data[rowIndex][column] = newValue;
     this.dataSource.data = [...data];
     this.editingCell = null;
     this.calculateTableRow(rowIndex);
+
+    // If user entered a name in the last row and it's not empty, add a new empty row
+    if (column === 'name' && newValue && newValue.trim() !== '') {
+      const isLastRow = rowIndex === data.length - 1;
+      const isLastRowEmpty = this.isRowEmpty(data[data.length - 1]);
+
+      if (isLastRow || !isLastRowEmpty) {
+        this.addEmptyRow();
+      }
+    }
+  }
+
+  /**
+   * Check if a row is empty (has no name or all values are empty/zero)
+   */
+  private isRowEmpty(row: any): boolean {
+    if (!row.name || row.name.trim() === '') {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Add a new empty row to the table
+   */
+  private addEmptyRow(): void {
+    const data = this.dataSource.data;
+    data.push({
+      name: '',
+      mo: 0,
+      tu: 0,
+      we: 0,
+      th: 0,
+      fr: 0,
+      totalRow: 0
+    });
+    this.dataSource.data = [...data];
   }
 
   /**
@@ -69,6 +133,16 @@ export class StoryTable implements OnInit {
    */
   cancelEdit(): void {
     this.editingCell = null;
+  }
+
+  /**
+   * Display value - show empty string for zero values to improve UX
+   */
+  displayValue(value: any): string {
+    if (value === 0 || value === null || value === undefined) {
+      return '';
+    }
+    return value.toString();
   }
 
   private calculateTableRow(rowIndex: number) {
