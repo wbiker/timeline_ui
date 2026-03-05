@@ -18,8 +18,8 @@
 
   <!-- Monday Column -->
   <ng-container matColumnDef="mo">
-    <th mat-header-cell *matHeaderCellDef>Mo</th>
-    <td mat-cell *matCellDef="let row; let i = index">
+    <th mat-header-cell *matHeaderCellDef [class.today]="todayColumn === 'mo'">Mo</th>
+    <td mat-cell *matCellDef="let row; let i = index" [class.today]="todayColumn === 'mo'">
       <span *ngIf="!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'mo'"
             (click)="startEdit(i, 'mo', row.mo)">
         {{ row.mo }}
@@ -34,9 +34,10 @@
     </td>
   </ng-container>
 
+  <!-- Tuesday Column -->
   <ng-container matColumnDef="tu">
-    <th mat-header-cell *matHeaderCellDef>Di</th>
-    <td mat-cell *matCellDef="let row; let i = index">
+    <th mat-header-cell *matHeaderCellDef [class.today]="todayColumn === 'tu'">Di</th>
+    <td mat-cell *matCellDef="let row; let i = index" [class.today]="todayColumn === 'tu'">
       <span *ngIf="!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'tu'"
             (mousedown)="startEdit(i, 'tu', row.tu)">
         {{ row.tu }}
@@ -50,9 +51,10 @@
     </td>
   </ng-container>
 
+  <!-- Wednesday Column -->
   <ng-container matColumnDef="we">
-    <th mat-header-cell *matHeaderCellDef>Mi</th>
-    <td mat-cell *matCellDef="let row; let i = index">
+    <th mat-header-cell *matHeaderCellDef [class.today]="todayColumn === 'we'">Mi</th>
+    <td mat-cell *matCellDef="let row; let i = index" [class.today]="todayColumn === 'we'">
       <span *ngIf="!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'we'"
             (mousedown)="startEdit(i, 'we', row.we)">
         {{ row.we }}
@@ -66,9 +68,10 @@
     </td>
   </ng-container>
 
+  <!-- Thursday Column -->
   <ng-container matColumnDef="th">
-    <th mat-header-cell *matHeaderCellDef>Do</th>
-    <td mat-cell *matCellDef="let row; let i = index">
+    <th mat-header-cell *matHeaderCellDef [class.today]="todayColumn === 'th'">Do</th>
+    <td mat-cell *matCellDef="let row; let i = index" [class.today]="todayColumn === 'th'">
       <span *ngIf="!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'th'"
             (mousedown)="startEdit(i, 'th', row.th)">
         {{ row.th }}
@@ -82,9 +85,10 @@
     </td>
   </ng-container>
 
+  <!-- Friday Column -->
   <ng-container matColumnDef="fr">
-    <th mat-header-cell *matHeaderCellDef>Fr</th>
-    <td mat-cell *matCellDef="let row; let i = index">
+    <th mat-header-cell *matHeaderCellDef [class.today]="todayColumn === 'fr'">Fr</th>
+    <td mat-cell *matCellDef="let row; let i = index" [class.today]="todayColumn === 'fr'">
       <span *ngIf="!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'fr'"
             (mousedown)="startEdit(i, 'fr', row.fr)">
         {{ row.fr }}
@@ -98,6 +102,7 @@
     </td>
   </ng-container>
 
+  <!-- Total Column -->
   <ng-container matColumnDef="totalRow">
     <th mat-header-cell *matHeaderCellDef>Gesamt</th>
     <td mat-cell *matCellDef="let row; let i = index">

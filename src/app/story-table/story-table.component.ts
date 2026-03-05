@@ -32,12 +32,14 @@ export class StoryTable implements OnInit, AfterViewChecked {
   displayedColumns: string[] = ['name', 'mo', 'tu', 'we', 'th', 'fr', 'totalRow'];
   editControl: FormControl = new FormControl();
   editingCell: { rowIndex: number; column: string } | null = null;
+  todayColumn: string;
   private shouldFocus = false;
 
   @ViewChildren('editInput') editInputs!: QueryList<ElementRef>;
 
   constructor(private fb: FormBuilder, private storyService: StoryService) {
     this.timespan = this.calculateTimespan();
+    this.todayColumn = this.getTodayColumn();
     this.dataSource = new MatTableDataSource([
       {
         name: '',
@@ -202,5 +204,22 @@ export class StoryTable implements OnInit, AfterViewChecked {
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = String(date.getFullYear()).slice(-2);
     return `${day}.${month}.${year}`;
+  }
+
+  /**
+   * Get today's day of week column key (mo, tu, we, th, fr)
+   * Returns empty string if today is Saturday or Sunday
+   */
+  private getTodayColumn(): string {
+    const today = new Date();
+    const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+    const dayMap: { [key: number]: string } = {
+      1: 'mo',
+      2: 'tu',
+      3: 'we',
+      4: 'th',
+      5: 'fr'
+    };
+    return dayMap[dayOfWeek] || '';
   }
 }

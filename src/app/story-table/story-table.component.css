@@ -154,3 +154,28 @@ td:last-of-type span {
   font-weight: 600;
   color: #1976d2;
 }
+
+/* Today's column highlighting */
+.mat-mdc-header-cell.today {
+  background-color: #ff9800;
+  color: white;
+  font-weight: 700;
+}
+
+td.today {
+  background-color: #fff3e0;
+  border-left: 4px solid #ff9800;
+  border-right: 4px solid #ff9800;
+}
+
+td.today span,
+td.today input {
+  border-color: #ff9800;
+}
+
+td.today input:focus {
+  border-color: #f57c00;
+  box-shadow: inset 0 0 0 1px #f57c00;
+  background-color: #fffbf5;
+}
+
