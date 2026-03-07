@@ -3,16 +3,19 @@
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef>{{timespan}}</th>
     <td mat-cell *matCellDef="let row; let i = index">
-      <span *ngIf="!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'name'"
-            (click)="startEdit(i, 'name', row.name)">
-        {{ row.name }}
-      </span>
-      <input *ngIf="editingCell && editingCell.rowIndex === i && editingCell.column === 'name'"
-             [formControl]="editControl"
+      @if (!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'name') {
+        <span (click)="startEdit(i, 'name', row.name)">
+          {{ row.name }}
+        </span>
+      }
+
+      @if (editingCell && editingCell.rowIndex === i && editingCell.column === 'name') {
+        <input [formControl]="editControl"
              (blur)="saveEdit(i, 'name')"
              (keyup.enter)="saveEdit(i, 'name')"
              (keyup.escape)="cancelEdit()"
              autofocus>
+      }
     </td>
   </ng-container>
 
@@ -20,17 +23,20 @@
   <ng-container matColumnDef="mo">
     <th mat-header-cell *matHeaderCellDef [class.today]="todayColumn === 'mo'">Mo</th>
     <td mat-cell *matCellDef="let row; let i = index" [class.today]="todayColumn === 'mo'">
-      <span *ngIf="!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'mo'"
-            (click)="startEdit(i, 'mo', row.mo)">
-        {{ row.mo }}
-      </span>
-      <input *ngIf="editingCell && editingCell.rowIndex === i && editingCell.column === 'mo'"
-             type="number"
+      @if (!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'mo') {
+        <span (click)="startEdit(i, 'mo', row.mo)">
+          {{ row.mo }}
+        </span>
+      }
+
+      @if (editingCell && editingCell.rowIndex === i && editingCell.column === 'mo') {
+        <input type="number"
              [formControl]="editControl"
              (blur)="saveEdit(i, 'mo')"
              (keyup.enter)="saveEdit(i, 'mo')"
              (keyup.escape)="cancelEdit()"
              autofocus>
+      }
     </td>
   </ng-container>
 
@@ -38,16 +44,19 @@
   <ng-container matColumnDef="tu">
     <th mat-header-cell *matHeaderCellDef [class.today]="todayColumn === 'tu'">Di</th>
     <td mat-cell *matCellDef="let row; let i = index" [class.today]="todayColumn === 'tu'">
-      <span *ngIf="!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'tu'"
-            (mousedown)="startEdit(i, 'tu', row.tu)">
-        {{ row.tu }}
-      </span>
-      <input #editInput *ngIf="editingCell && editingCell.rowIndex === i && editingCell.column === 'tu'"
-             type="number"
+      @if (!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'tu') {
+        <span (mousedown)="startEdit(i, 'tu', row.tu)">
+          {{ row.tu }}
+        </span>
+      }
+
+      @if (editingCell && editingCell.rowIndex === i && editingCell.column === 'tu') {
+        <input type="number"
              [formControl]="editControl"
              (blur)="saveEdit(i, 'tu')"
              (keyup.enter)="saveEdit(i, 'tu')"
              (keyup.escape)="cancelEdit()">
+      }
     </td>
   </ng-container>
 
@@ -55,16 +64,20 @@
   <ng-container matColumnDef="we">
     <th mat-header-cell *matHeaderCellDef [class.today]="todayColumn === 'we'">Mi</th>
     <td mat-cell *matCellDef="let row; let i = index" [class.today]="todayColumn === 'we'">
-      <span *ngIf="!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'we'"
-            (mousedown)="startEdit(i, 'we', row.we)">
-        {{ row.we }}
-      </span>
-      <input #editInput *ngIf="editingCell && editingCell.rowIndex === i && editingCell.column === 'we'"
+      @if (!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'we') {
+        <span
+          (mousedown)="startEdit(i, 'we', row.we)">
+          {{ row.we }}
+        </span>
+      }
+      @if (editingCell && editingCell.rowIndex === i && editingCell.column === 'we') {
+        <input #editInput
              type="number"
              [formControl]="editControl"
              (blur)="saveEdit(i, 'we')"
              (keyup.enter)="saveEdit(i, 'we')"
              (keyup.escape)="cancelEdit()">
+      }
     </td>
   </ng-container>
 
@@ -72,16 +85,20 @@
   <ng-container matColumnDef="th">
     <th mat-header-cell *matHeaderCellDef [class.today]="todayColumn === 'th'">Do</th>
     <td mat-cell *matCellDef="let row; let i = index" [class.today]="todayColumn === 'th'">
-      <span *ngIf="!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'th'"
-            (mousedown)="startEdit(i, 'th', row.th)">
-        {{ row.th }}
-      </span>
-      <input #editInput *ngIf="editingCell && editingCell.rowIndex === i && editingCell.column === 'th'"
+      @if (!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'th') {
+        <span (mousedown)="startEdit(i, 'th', row.th)">
+          {{ row.th }}
+        </span>
+      }
+
+      @if (editingCell && editingCell.rowIndex === i && editingCell.column === 'th') {
+        <input #editInput
              type="number"
              [formControl]="editControl"
              (blur)="saveEdit(i, 'th')"
              (keyup.enter)="saveEdit(i, 'th')"
              (keyup.escape)="cancelEdit()">
+      }
     </td>
   </ng-container>
 
@@ -89,16 +106,20 @@
   <ng-container matColumnDef="fr">
     <th mat-header-cell *matHeaderCellDef [class.today]="todayColumn === 'fr'">Fr</th>
     <td mat-cell *matCellDef="let row; let i = index" [class.today]="todayColumn === 'fr'">
-      <span *ngIf="!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'fr'"
-            (mousedown)="startEdit(i, 'fr', row.fr)">
-        {{ row.fr }}
-      </span>
-      <input #editInput *ngIf="editingCell && editingCell.rowIndex === i && editingCell.column === 'fr'"
+      @if (!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'fr') {
+        <span (mousedown)="startEdit(i, 'fr', row.fr)">
+          {{ row.fr }}
+        </span>
+      }
+
+      @if (editingCell && editingCell.rowIndex === i && editingCell.column === 'fr') {
+        <input #editInput
              type="number"
              [formControl]="editControl"
              (blur)="saveEdit(i, 'fr')"
              (keyup.enter)="saveEdit(i, 'fr')"
              (keyup.escape)="cancelEdit()">
+      }
     </td>
   </ng-container>
 

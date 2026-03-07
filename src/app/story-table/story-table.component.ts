@@ -54,8 +54,7 @@ export class StoryTable implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
-//     this.dataSource = this.storyService.fetchData();
-    const result = this.storyService.fetchData();
+    const result = this.waitForReply();
   }
 
   ngAfterViewChecked() {
@@ -66,6 +65,11 @@ export class StoryTable implements OnInit, AfterViewChecked {
     }
   }
 
+ async waitForReply() {
+    const result = await this.storyService.fetchData();
+    console.log("oninit: " + result);
+    return result;
+ }
   /**
    * Start editing a cell
    */
@@ -91,6 +95,8 @@ export class StoryTable implements OnInit, AfterViewChecked {
     this.dataSource.data = [...data];
     this.editingCell = null;
     this.calculateTableRow(rowIndex);
+    const dataToSend = this.dataSource.data;
+    this.storyService.storeData(dataToSend);
 
     // If user entered a name in the last row and it's not empty, add a new empty row
     if (column === 'name' && newValue && newValue.trim() !== '') {
@@ -147,6 +153,9 @@ export class StoryTable implements OnInit, AfterViewChecked {
     return value.toString();
   }
 
+/**
+ * sums up all numbers from a row
+ */
   private calculateTableRow(rowIndex: number) {
     const data = this.dataSource.data;
     const total = Object.entries(data[rowIndex]).reduce<number>((acc, [key, value]) => {
