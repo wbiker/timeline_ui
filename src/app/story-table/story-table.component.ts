@@ -42,19 +42,25 @@ export class StoryTable implements OnInit, AfterViewChecked {
     this.todayColumn = this.getTodayColumn();
     this.dataSource = new MatTableDataSource([
       {
+        identifier: 0,
+        storyId: '',
+        weeknumber: 0,
         name: '',
-        mo: 0,
-        tu: 0,
-        we: 0,
-        th: 0,
-        fr: 0,
+        monday: 0,
+        tuesday: 0,
+        wednsday: 0,
+        thursday: 0,
+        friday: 0,
         totalRow: 0
       }
     ]);
   }
 
   ngOnInit() {
-    const result = this.waitForReply();
+    const today = new Date();
+    const weekNumber = this.getWeekNumber(today);
+    const result = this.waitForReply(weekNumber);
+    console.log(result);
   }
 
   ngAfterViewChecked() {
@@ -65,8 +71,8 @@ export class StoryTable implements OnInit, AfterViewChecked {
     }
   }
 
- async waitForReply() {
-    const result = await this.storyService.fetchData();
+ async waitForReply(weekNumber: number) {
+    const result = await this.storyService.fetchData(weekNumber);
     console.log("oninit: " + result);
     return result;
  }
