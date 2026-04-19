@@ -10,14 +10,14 @@ export class StoryService {
 
   async fetchData(weekNumber: number) {
     return await lastValueFrom(
-      this.http.get('http://localhost:9090/stories/' + weekNumber)
+      this.http.get('http://localhost:9090/storyoccurrence/' + weekNumber)
     );
   }
 
   async storeData(data: unknown) {
     console.log("store data: " + JSON.stringify(data));
     const response = await lastValueFrom(
-      this.http.post('http://localhost:9090/stories', data, {
+      this.http.post('http://localhost:9090/storyoccurrence', data, {
         headers: { 'Content-Type': 'application/json' }
       })
     );

@@ -5,6 +5,18 @@ import { ReactiveFormsModule, FormBuilder, FormControl } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { StoryService } from '../services/story-service'
 
+type StoryOccurrenceModel = {
+    identifier: number;
+    title: string;
+    weeknumber: number;
+    monday: number;
+    tuesday: number;
+    wednesday: number;
+    thursday: number;
+    friday: number;
+    total: number;
+};
+
 @Component({
   selector: 'app-story-table',
   imports: [
@@ -29,7 +41,7 @@ import { StoryService } from '../services/story-service'
 export class StoryTable implements OnInit, AfterViewChecked {
   timespan: string;
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['name', 'mo', 'tu', 'we', 'th', 'fr', 'totalRow'];
+  displayedColumns: string[] = ['title', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'total'];
   editControl: FormControl = new FormControl();
   editingCell: { rowIndex: number; column: string } | null = null;
   todayColumn: string;
@@ -40,18 +52,19 @@ export class StoryTable implements OnInit, AfterViewChecked {
   constructor(private fb: FormBuilder, private storyService: StoryService) {
     this.timespan = this.calculateTimespan();
     this.todayColumn = this.getTodayColumn();
-    this.dataSource = new MatTableDataSource([
+    const today = new Date();
+    const weekNumber = this.getWeekNumber(today);
+    this.dataSource = new MatTableDataSource<StoryOccurrenceModel>([
       {
         identifier: 0,
-        storyId: '',
-        weeknumber: 0,
-        name: '',
+        weeknumber: weekNumber,
+        title: '',
         monday: 0,
         tuesday: 0,
-        wednsday: 0,
+        wednesday: 0,
         thursday: 0,
         friday: 0,
-        totalRow: 0
+        total: 0
       }
     ]);
   }
@@ -93,7 +106,7 @@ export class StoryTable implements OnInit, AfterViewChecked {
     let newValue = this.editControl.value;
 
     // For numeric columns, convert empty/null values to 0
-    if (column !== 'name' && (newValue === null || newValue === undefined || newValue === '')) {
+    if (column !== 'title' && (newValue === null || newValue === undefined || newValue === '')) {
       newValue = 0;
     }
 
@@ -102,10 +115,10 @@ export class StoryTable implements OnInit, AfterViewChecked {
     this.editingCell = null;
     this.calculateTableRow(rowIndex);
     const dataToSend = this.dataSource.data;
-    this.storyService.storeData(dataToSend);
+    this.storyService.storeData(dataToSend[rowIndex]);
 
-    // If user entered a name in the last row and it's not empty, add a new empty row
-    if (column === 'name' && newValue && newValue.trim() !== '') {
+    // If user entered a title in the last row and it's not empty, add a new empty row
+    if (column === 'title' && newValue && newValue.trim() !== '') {
       const isLastRow = rowIndex === data.length - 1;
       const isLastRowEmpty = this.isRowEmpty(data[data.length - 1]);
 
@@ -116,10 +129,10 @@ export class StoryTable implements OnInit, AfterViewChecked {
   }
 
   /**
-   * Check if a row is empty (has no name or all values are empty/zero)
+   * Check if a row is empty (has no title or all values are empty/zero)
    */
   private isRowEmpty(row: any): boolean {
-    if (!row.name || row.name.trim() === '') {
+    if (!row.title || row.title.trim() === '') {
       return true;
     }
     return false;
@@ -130,14 +143,17 @@ export class StoryTable implements OnInit, AfterViewChecked {
    */
   private addEmptyRow(): void {
     const data = this.dataSource.data;
+    const today = new Date();
+    const weekNumber = this.getWeekNumber(today);
     data.push({
-      name: '',
-      mo: 0,
-      tu: 0,
-      we: 0,
-      th: 0,
-      fr: 0,
-      totalRow: 0
+      title: '',
+      weeknumber: weekNumber,
+      monday: 0,
+      tuesday: 0,
+      wednesday: 0,
+      thursday: 0,
+      friday: 0,
+      total: 0
     });
     this.dataSource.data = [...data];
   }
@@ -165,12 +181,12 @@ export class StoryTable implements OnInit, AfterViewChecked {
   private calculateTableRow(rowIndex: number) {
     const data = this.dataSource.data;
     const total = Object.entries(data[rowIndex]).reduce<number>((acc, [key, value]) => {
-        if (typeof value === 'number' && key !== 'totalRow') {
+        if (typeof value === 'number' && key !== 'total' && key !== 'weeknumber') {
           return acc += value;
         }
         return acc;
       }, 0)
-    data[rowIndex]['totalRow'] = total;
+    data[rowIndex]['total'] = total;
   }
 
   /**
@@ -229,11 +245,11 @@ export class StoryTable implements OnInit, AfterViewChecked {
     const today = new Date();
     const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
     const dayMap: { [key: number]: string } = {
-      1: 'mo',
-      2: 'tu',
-      3: 'we',
-      4: 'th',
-      5: 'fr'
+      1: 'monday',
+      2: 'tuesday',
+      3: 'wednesday',
+      4: 'thursday',
+      5: 'friday'
     };
     return dayMap[dayOfWeek] || '';
   }

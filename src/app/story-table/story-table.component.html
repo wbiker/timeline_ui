@@ -1,18 +1,18 @@
 <mat-table [dataSource]="dataSource">
   <!-- Name Column -->
-  <ng-container matColumnDef="name">
+  <ng-container matColumnDef="title">
     <th mat-header-cell *matHeaderCellDef>{{timespan}}</th>
     <td mat-cell *matCellDef="let row; let i = index">
-      @if (!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'name') {
-        <span (click)="startEdit(i, 'name', row.name)">
-          {{ row.name }}
+      @if (!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'title') {
+        <span (click)="startEdit(i, 'title', row.title)">
+          {{ row.title }}
         </span>
       }
 
-      @if (editingCell && editingCell.rowIndex === i && editingCell.column === 'name') {
+      @if (editingCell && editingCell.rowIndex === i && editingCell.column === 'title') {
         <input [formControl]="editControl"
-             (blur)="saveEdit(i, 'name')"
-             (keyup.enter)="saveEdit(i, 'name')"
+             (blur)="saveEdit(i, 'title')"
+             (keyup.enter)="saveEdit(i, 'title')"
              (keyup.escape)="cancelEdit()"
              autofocus>
       }
@@ -20,20 +20,20 @@
   </ng-container>
 
   <!-- Monday Column -->
-  <ng-container matColumnDef="mo">
-    <th mat-header-cell *matHeaderCellDef [class.today]="todayColumn === 'mo'">Mo</th>
-    <td mat-cell *matCellDef="let row; let i = index" [class.today]="todayColumn === 'mo'">
-      @if (!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'mo') {
-        <span (click)="startEdit(i, 'mo', row.mo)">
-          {{ row.mo }}
+  <ng-container matColumnDef="monday">
+    <th mat-header-cell *matHeaderCellDef [class.today]="todayColumn === 'monday'">Mo</th>
+    <td mat-cell *matCellDef="let row; let i = index" [class.today]="todayColumn === 'monday'">
+      @if (!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'monday') {
+        <span (click)="startEdit(i, 'monday', row.monday)">
+          {{ row.monday }}
         </span>
       }
 
-      @if (editingCell && editingCell.rowIndex === i && editingCell.column === 'mo') {
+      @if (editingCell && editingCell.rowIndex === i && editingCell.column === 'monday') {
         <input type="number"
              [formControl]="editControl"
-             (blur)="saveEdit(i, 'mo')"
-             (keyup.enter)="saveEdit(i, 'mo')"
+             (blur)="saveEdit(i, 'monday')"
+             (keyup.enter)="saveEdit(i, 'monday')"
              (keyup.escape)="cancelEdit()"
              autofocus>
       }
@@ -41,93 +41,93 @@
   </ng-container>
 
   <!-- Tuesday Column -->
-  <ng-container matColumnDef="tu">
-    <th mat-header-cell *matHeaderCellDef [class.today]="todayColumn === 'tu'">Di</th>
-    <td mat-cell *matCellDef="let row; let i = index" [class.today]="todayColumn === 'tu'">
-      @if (!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'tu') {
-        <span (mousedown)="startEdit(i, 'tu', row.tu)">
-          {{ row.tu }}
+  <ng-container matColumnDef="tuesday">
+    <th mat-header-cell *matHeaderCellDef [class.today]="todayColumn === 'tuesday'">Di</th>
+    <td mat-cell *matCellDef="let row; let i = index" [class.today]="todayColumn === 'tuesday'">
+      @if (!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'tuesday') {
+        <span (mousedown)="startEdit(i, 'tuesday', row.tuesday)">
+          {{ row.tuesday }}
         </span>
       }
 
-      @if (editingCell && editingCell.rowIndex === i && editingCell.column === 'tu') {
+      @if (editingCell && editingCell.rowIndex === i && editingCell.column === 'tuesday') {
         <input type="number"
              [formControl]="editControl"
-             (blur)="saveEdit(i, 'tu')"
-             (keyup.enter)="saveEdit(i, 'tu')"
+             (blur)="saveEdit(i, 'tuesday')"
+             (keyup.enter)="saveEdit(i, 'tuesday')"
              (keyup.escape)="cancelEdit()">
       }
     </td>
   </ng-container>
 
   <!-- Wednesday Column -->
-  <ng-container matColumnDef="we">
-    <th mat-header-cell *matHeaderCellDef [class.today]="todayColumn === 'we'">Mi</th>
-    <td mat-cell *matCellDef="let row; let i = index" [class.today]="todayColumn === 'we'">
-      @if (!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'we') {
+  <ng-container matColumnDef="wednesday">
+    <th mat-header-cell *matHeaderCellDef [class.today]="todayColumn === 'wednesday'">Mi</th>
+    <td mat-cell *matCellDef="let row; let i = index" [class.today]="todayColumn === 'wednesday'">
+      @if (!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'wednesday') {
         <span
-          (mousedown)="startEdit(i, 'we', row.we)">
-          {{ row.we }}
+          (mousedown)="startEdit(i, 'wednesday', row.wednesday)">
+          {{ row.wednesday }}
         </span>
       }
-      @if (editingCell && editingCell.rowIndex === i && editingCell.column === 'we') {
+      @if (editingCell && editingCell.rowIndex === i && editingCell.column === 'wednesday') {
         <input #editInput
              type="number"
              [formControl]="editControl"
-             (blur)="saveEdit(i, 'we')"
-             (keyup.enter)="saveEdit(i, 'we')"
+             (blur)="saveEdit(i, 'wednesday')"
+             (keyup.enter)="saveEdit(i, 'wednesday')"
              (keyup.escape)="cancelEdit()">
       }
     </td>
   </ng-container>
 
   <!-- Thursday Column -->
-  <ng-container matColumnDef="th">
-    <th mat-header-cell *matHeaderCellDef [class.today]="todayColumn === 'th'">Do</th>
-    <td mat-cell *matCellDef="let row; let i = index" [class.today]="todayColumn === 'th'">
-      @if (!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'th') {
-        <span (mousedown)="startEdit(i, 'th', row.th)">
-          {{ row.th }}
+  <ng-container matColumnDef="thursday">
+    <th mat-header-cell *matHeaderCellDef [class.today]="todayColumn === 'thursday'">Do</th>
+    <td mat-cell *matCellDef="let row; let i = index" [class.today]="todayColumn === 'thursday'">
+      @if (!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'thursday') {
+        <span (mousedown)="startEdit(i, 'thursday', row.thursday)">
+          {{ row.thursday }}
         </span>
       }
 
-      @if (editingCell && editingCell.rowIndex === i && editingCell.column === 'th') {
+      @if (editingCell && editingCell.rowIndex === i && editingCell.column === 'thursday') {
         <input #editInput
              type="number"
              [formControl]="editControl"
-             (blur)="saveEdit(i, 'th')"
-             (keyup.enter)="saveEdit(i, 'th')"
+             (blur)="saveEdit(i, 'thursday')"
+             (keyup.enter)="saveEdit(i, 'thursday')"
              (keyup.escape)="cancelEdit()">
       }
     </td>
   </ng-container>
 
   <!-- Friday Column -->
-  <ng-container matColumnDef="fr">
-    <th mat-header-cell *matHeaderCellDef [class.today]="todayColumn === 'fr'">Fr</th>
-    <td mat-cell *matCellDef="let row; let i = index" [class.today]="todayColumn === 'fr'">
-      @if (!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'fr') {
-        <span (mousedown)="startEdit(i, 'fr', row.fr)">
-          {{ row.fr }}
+  <ng-container matColumnDef="friday">
+    <th mat-header-cell *matHeaderCellDef [class.today]="todayColumn === 'friday'">Fr</th>
+    <td mat-cell *matCellDef="let row; let i = index" [class.today]="todayColumn === 'friday'">
+      @if (!editingCell || editingCell.rowIndex !== i || editingCell.column !== 'friday') {
+        <span (mousedown)="startEdit(i, 'friday', row.friday)">
+          {{ row.friday }}
         </span>
       }
 
-      @if (editingCell && editingCell.rowIndex === i && editingCell.column === 'fr') {
+      @if (editingCell && editingCell.rowIndex === i && editingCell.column === 'friday') {
         <input #editInput
              type="number"
              [formControl]="editControl"
-             (blur)="saveEdit(i, 'fr')"
-             (keyup.enter)="saveEdit(i, 'fr')"
+             (blur)="saveEdit(i, 'friday')"
+             (keyup.enter)="saveEdit(i, 'friday')"
              (keyup.escape)="cancelEdit()">
       }
     </td>
   </ng-container>
 
   <!-- Total Column -->
-  <ng-container matColumnDef="totalRow">
+  <ng-container matColumnDef="total">
     <th mat-header-cell *matHeaderCellDef>Gesamt</th>
     <td mat-cell *matCellDef="let row; let i = index">
-      <span>{{ displayValue(row.totalRow) }}</span>
+      <span>{{ displayValue(row.total) }}</span>
     </td>
   </ng-container>
 
